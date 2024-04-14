@@ -397,7 +397,7 @@ class ZeekEngine(object):
                 # This check can be good if the domain has already been cached by
                 # the device so it wont appear in self.dns.
 
-                if any([cert["cn"].endswith(r["domain"]) for r in self.dns]):
+                if any(cert["cn"].endswith(r["domain"]) for r in self.dns):
                     continue
 
                 for domain in self.bl_domains:

@@ -2,9 +2,9 @@ pymisp==2.4.165.1
 sqlalchemy==1.4.48
 ipwhois==1.2.0
 netaddr==0.8.0
-flask==1.1.2
+flask==2.2.5
 flask_httpauth==4.8.0
-pyjwt==1.7.1
+pyjwt==2.4.0
 psutil==5.8.0
 pydig==0.4.0
 pyudev==0.24.0

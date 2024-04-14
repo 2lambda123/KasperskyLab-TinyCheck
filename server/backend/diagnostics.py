@@ -1,8 +1,9 @@
 #!/usr/bin/python
 import os
-import subprocess
 import platform
 import socket
+import subprocess
+
 import pkg_resources
 import psutil
 

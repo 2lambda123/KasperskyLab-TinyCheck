@@ -14,7 +14,7 @@ __version__ = "1.0.17"
 def collect_accounts_info():
     """This call collects generic information about
     user accounts presented on system running TinyCheck.
-    
+
     No personal information collected or provided by this call.
 
 
@@ -37,7 +37,7 @@ def collect_accounts_info():
 def collect_os_info():
     """This call collects generic information about
     operating system running TinyCheck.
-    
+
     No personal information collected or provided by this call.
 
 
@@ -56,7 +56,7 @@ def collect_os_info():
 
 def collect_hardware_info():
     """This call collects information about hardware running TinyCheck.
-    
+
     No personal information collected or provided by this call.
 
 
@@ -79,7 +79,7 @@ def collect_hardware_info():
 def collect_network_info():
     """This call collects information about
     network configuration and state running TinyCheck.
-    
+
     No personal information collected or provided by this call.
 
 
@@ -104,10 +104,10 @@ def collect_network_info():
 def collect_dependency_info(package_list):
     """This call collects information about
     python packages required to run TinyCheck.
-    
+
     No personal information collected or provided by this call.
 
-    :param package_list: 
+    :param package_list:
 
     """
     dependencies = {}
@@ -128,8 +128,8 @@ def collect_dependency_info(package_list):
 def collect_db_tables_records_count(db_path, tables):
     """
 
-    :param db_path: 
-    :param tables: 
+    :param db_path:
+    :param tables:
 
     """
     result = {}
@@ -148,12 +148,12 @@ def collect_db_tables_records_count(db_path, tables):
 def collect_internal_state(db_path, tables, to_check):
     """This call collects information about
     installed TinyCheck instance and its internal state.
-    
+
     No personal information collected or provided by this call.
 
-    :param db_path: 
-    :param tables: 
-    :param to_check: 
+    :param db_path:
+    :param tables:
+    :param to_check:
 
     """
     state_ = {}

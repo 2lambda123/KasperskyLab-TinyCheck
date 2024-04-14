@@ -67,7 +67,7 @@ class ZeekEngine(object):
         """Fill the DNS resolutions thanks to the dns.log.
         :return: nothing - all resolutions appended to self.dns.
 
-        :param dir: 
+        :param dir:
 
         """
         if os.path.isfile(os.path.join(dir, "dns.log")):
@@ -87,7 +87,7 @@ class ZeekEngine(object):
         """Enrich and check the netflow from the conn.log against whitelist and IOCs.
         :return: nothing - all stuff appended to self.alerts
 
-        :param dir: 
+        :param dir:
 
         """
         max_ports = get_config(("analysis", "max_ports"))
@@ -388,7 +388,7 @@ class ZeekEngine(object):
             * [todo] Check possible binary data or APKs?
         :return: nothing - all stuff appended to self.alerts
 
-        :param dir: 
+        :param dir:
 
         """
 
@@ -437,7 +437,7 @@ class ZeekEngine(object):
         Can be used when no DNS query have been done during the session (already cached by the device.)
         :return: nothing - all stuff appended to self.alerts
 
-        :param dir: 
+        :param dir:
 
         """
 
@@ -515,7 +515,7 @@ class ZeekEngine(object):
             * Blacklisted domain in the CN
         :return: nothing - all stuff appended to self.alerts
 
-        :param dir: 
+        :param dir:
 
         """
         ssl_default_ports = get_config(("analysis", "ssl_default_ports"))
@@ -652,10 +652,10 @@ class ZeekEngine(object):
     def resolve(self, ip_addr):
         """A simple method to retreive DNS names from IP addresses
         in order to replace them in alerts.
-        
+
         :return: String - DNS record or IP Address.
 
-        :param ip_addr: 
+        :param ip_addr:
 
         """
         for record in self.dns:

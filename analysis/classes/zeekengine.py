@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from classes.parsezeeklogs import ParseZeekLogs
-from netaddr import IPNetwork, IPAddress
-from utils import get_iocs, get_config, get_whitelist
-from datetime import datetime
-import subprocess as sp
 import json
-import pydig
 import os
 import re
+import subprocess as sp
 import sys
+from datetime import datetime
+
+import pydig
 import whois
+from classes.parsezeeklogs import ParseZeekLogs
+from netaddr import IPAddress, IPNetwork
+from utils import get_config, get_iocs, get_whitelist
 
 
 class ZeekEngine(object):

@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import whois
+from security import safe_command
 
 
 class ZeekEngine(object):
@@ -445,9 +446,9 @@ class ZeekEngine(object):
         """
             Start zeek and check the logs.
         """
-        sp.Popen("cd {} && /opt/zeek/bin/zeek -Cr capture.pcap protocols/ssl/validate-certs".format(
+        safe_command.run(sp.Popen, "cd {} && /opt/zeek/bin/zeek -Cr capture.pcap protocols/ssl/validate-certs".format(
             self.working_dir), shell=False).wait()
-        sp.Popen("cd {} && mv *.log assets/".format(self.working_dir),
+        safe_command.run(sp.Popen, "cd {} && mv *.log assets/".format(self.working_dir),
                  shell=False).wait()
         self.fill_dns(self.working_dir + "/assets/")
         self.netflow_check(self.working_dir + "/assets/")

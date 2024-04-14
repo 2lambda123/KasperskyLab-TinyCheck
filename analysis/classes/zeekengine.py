@@ -16,6 +16,7 @@ from utils import get_config, get_iocs, get_whitelist
 
 
 class ZeekEngine(object):
+    """ """
 
     def __init__(self, capture_directory):
         self.working_dir = capture_directory
@@ -61,9 +62,11 @@ class ZeekEngine(object):
             self.template = json.load(f)["alerts"]
 
     def fill_dns(self, dir):
-        """
-        Fill the DNS resolutions thanks to the dns.log.
+        """Fill the DNS resolutions thanks to the dns.log.
         :return: nothing - all resolutions appended to self.dns.
+
+        :param dir: 
+
         """
         if os.path.isfile(os.path.join(dir, "dns.log")):
             for record in ParseZeekLogs(
@@ -79,9 +82,11 @@ class ZeekEngine(object):
                             self.dns.append(d)
 
     def netflow_check(self, dir):
-        """
-        Enrich and check the netflow from the conn.log against whitelist and IOCs.
+        """Enrich and check the netflow from the conn.log against whitelist and IOCs.
         :return: nothing - all stuff appended to self.alerts
+
+        :param dir: 
+
         """
         max_ports = get_config(("analysis", "max_ports"))
         http_default_port = get_config(("analysis", "http_default_port"))
@@ -376,11 +381,13 @@ class ZeekEngine(object):
                     pass
 
     def files_check(self, dir):
-        """
-        Check on the files.log:
+        """Check on the files.log:
             * Check certificates sha1
             * [todo] Check possible binary data or APKs?
         :return: nothing - all stuff appended to self.alerts
+
+        :param dir: 
+
         """
 
         if not self.iocs_analysis:
@@ -423,11 +430,13 @@ class ZeekEngine(object):
                         )
 
     def http_check(self, dir):
-        """
-        Check on the http.log:
+        """Check on the http.log:
             * Blacklisted domain/tld from the Host header field.
         Can be used when no DNS query have been done during the session (already cached by the device.)
         :return: nothing - all stuff appended to self.alerts
+
+        :param dir: 
+
         """
 
         if os.path.isfile(os.path.join(dir, "http.log")):
@@ -497,13 +506,15 @@ class ZeekEngine(object):
                         )
 
     def ssl_check(self, dir):
-        """
-        Check on the ssl.log:
+        """Check on the ssl.log:
             * SSL connections which doesn't use the 443.
             * "Free" certificate issuer (taken from the config).
             * Self-signed certificates.
             * Blacklisted domain in the CN
         :return: nothing - all stuff appended to self.alerts
+
+        :param dir: 
+
         """
         ssl_default_ports = get_config(("analysis", "ssl_default_ports"))
         free_issuers = get_config(("analysis", "free_issuers"))
@@ -609,9 +620,10 @@ class ZeekEngine(object):
                             )
 
     def alerts_check(self):
-        """
-        Leverage an advice to the user based on the trigered hosts
+        """Leverage an advice to the user based on the trigered hosts
         :return: nothing - all generated alerts appended to self.alerts
+
+
         """
         hosts = {}
 
@@ -636,11 +648,13 @@ class ZeekEngine(object):
                 )
 
     def resolve(self, ip_addr):
-        """
-        A simple method to retreive DNS names from IP addresses
+        """A simple method to retreive DNS names from IP addresses
         in order to replace them in alerts.
-
+        
         :return: String - DNS record or IP Address.
+
+        :param ip_addr: 
+
         """
         for record in self.dns:
             if ip_addr in record["answers"]:
@@ -648,9 +662,7 @@ class ZeekEngine(object):
         return ip_addr
 
     def start_zeek(self):
-        """
-        Start zeek and check the logs.
-        """
+        """Start zeek and check the logs."""
         sp.Popen(
             "cd {} && /opt/zeek/bin/zeek -Cr capture.pcap protocols/ssl/validate-certs".format(
                 self.working_dir
@@ -668,22 +680,25 @@ class ZeekEngine(object):
         self.alerts_check()
 
     def retrieve_alerts(self):
-        """
-        Retrieve alerts.
+        """Retrieve alerts.
         :return: list - a list of alerts wihout duplicates.
+
+
         """
         return [dict(t) for t in {tuple(d.items()) for d in self.alerts}]
 
     def retrieve_whitelist(self):
-        """
-        Retrieve whitelisted elements.
+        """Retrieve whitelisted elements.
         :return: list - a list of whitelisted elements wihout duplicates.
+
+
         """
         return [dict(t) for t in {tuple(d.items()) for d in self.whitelist}]
 
     def retrieve_conns(self):
-        """
-        Retrieve not whitelisted elements.
+        """Retrieve not whitelisted elements.
         :return: list - a list of non-whitelisted elements wihout duplicates.
+
+
         """
         return self.conns

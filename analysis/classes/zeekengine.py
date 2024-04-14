@@ -446,9 +446,9 @@ class ZeekEngine(object):
             Start zeek and check the logs.
         """
         sp.Popen("cd {} && /opt/zeek/bin/zeek -Cr capture.pcap protocols/ssl/validate-certs".format(
-            self.working_dir), shell=True).wait()
+            self.working_dir), shell=False).wait()
         sp.Popen("cd {} && mv *.log assets/".format(self.working_dir),
-                 shell=True).wait()
+                 shell=False).wait()
         self.fill_dns(self.working_dir + "/assets/")
         self.netflow_check(self.working_dir + "/assets/")
         self.ssl_check(self.working_dir + "/assets/")

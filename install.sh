@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CURRENT_USER="${SUDO_USER}"
+CURRENT_USER="$SUDO_USER"
 SCRIPT_PATH="$( cd "$(dirname "$0")" || exit ; pwd -P )"
 HOST="$( hostname )"
 IFACES="$( ip a s | grep -Eo '[a-z0-9]{4,15}\: ' | grep -oE [a-z0-9]+ )"
@@ -49,7 +49,7 @@ set_userlang() {
     read lang
 
     if [[ " ${LOCALES[@]} " =~ " ${lang} " ]]; then
-        sed -i "s/userlang/${lang}/g" /usr/share/tinycheck/config.yaml
+        sed -i "s/userlang/$lang/g" /usr/share/tinycheck/config.yaml
         echo -e "\e[92m    [✔] User language settled!\e[39m"
     else
         echo -e "\e[91m    [✘] You must choose between the languages proposed, let's retry.\e[39m"
@@ -248,8 +248,8 @@ EOL
 
 update_config(){
     # Update the configuration
-    sed -i "s/iface_out/${IFACE_OUT}/g" /usr/share/tinycheck/config.yaml
-    sed -i "s/iface_in/${IFACE_IN}/g" /usr/share/tinycheck/config.yaml
+    sed -i "s/iface_out/$IFACE_OUT/g" /usr/share/tinycheck/config.yaml
+    sed -i "s/iface_in/$IFACE_IN/g" /usr/share/tinycheck/config.yaml
 }
 
 change_hostname() {
@@ -353,7 +353,7 @@ compile_vuejs() {
 create_desktop() {
     # Create desktop icon to lauch TinyCheck in a browser
     if [[ -d "/home/$CURRENT_USER/Desktop/" ]]; then
-    echo -e "\e[39m[+] Create Desktop icon under /home/${CURRENT_USER}/Desktop\e[39m"
+    echo -e "\e[39m[+] Create Desktop icon under /home/$CURRENT_USER/Desktop\e[39m"
     cat >"/home/$CURRENT_USER/Desktop/tinycheck.desktop" <<EOL
 #!/usr/bin/env xdg-open
 
@@ -400,7 +400,7 @@ check_interfaces(){
         echo -e "\e[92m    [✔] $ciface settled as a bridge to the Internet\e[39m"
     else
         IFACES=( "${IFACES[@]/$ciface}" )
-        for iface in $IFACES;
+        for iface in "$IFACES";
         do
             config="$(ip a s "$iface")"
             echo -n "[?] Do you want to use $iface as a bridge to Internet (network/out) ? [Y/n] "
@@ -417,7 +417,7 @@ check_interfaces(){
 
     # Setup of iface_in which can be a only a
     # Wi-Fi interface with AP mode available.
-    for iface in $IFACES;
+    for iface in "$IFACES";
     do
         if echo "$iface" | grep -Eq "(wlan[0-9]|wl[a-z0-9]{,20})"; then
             config="$(ip a s "$iface")"                             # Get the iface logic configuration
@@ -438,7 +438,7 @@ check_interfaces(){
             fi
         fi
     done
-    if [ "${IFACE_IN}" != "" ] && [ "${IFACE_OUT}" != "" ]; then
+    if [ "$IFACE_IN" != "" ] && [ "$IFACE_OUT" != "" ]; then
         echo -e "\e[92m    [✔] Network configuration settled!\e[39m"
     else
         echo -e "\e[91m    [✘] You must select two interfaces, exiting.\e[39m"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CURRENT_USER="${SUDO_USER}"
-SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$( cd "$(dirname "$0")" || exit ; pwd -P )"
 HOST="$( hostname )"
 IFACES="$( ip a s | grep -Eo '[a-z0-9]{4,15}\: ' | grep -oE [a-z0-9]+ )"
 IFACE_OUT=""
@@ -266,7 +266,7 @@ install_package() {
    # Install associated packages by using aptitude.
    if [[ $1 == "dnsmasq" || $1 == "hostapd" || $1 == "tshark" || $1 == "sqlite3" || $1 == "unclutter" || $1 == "swig" || $1 == "curl" ]]; then
 
-       apt-get install $1 -y
+       apt-get install "$1" -y
    elif [[ $1 == "suricata" ]];then 
        add-apt-repository ppa:oisf/suricata-stable
        apt-get install suricata -y
@@ -335,7 +335,7 @@ check_dependencies() {
            echo -e "\e[92m    [✔] ${bin##*/} installed\e[39m"
        else
            echo -e "\e[93m    [✘] ${bin##*/} not installed, lets install it\e[39m"
-           install_package ${bin##*/}
+           install_package "${bin##*/}"
       fi
    done
    install_package node
@@ -402,7 +402,7 @@ check_interfaces(){
         IFACES=( "${IFACES[@]/$ciface}" )
         for iface in $IFACES;
         do
-            config="$(ip a s $iface)"
+            config="$(ip a s "$iface")"
             echo -n "[?] Do you want to use $iface as a bridge to Internet (network/out) ? [Y/n] "
             read answer
             if [[ "$answer" =~ ^([yY][eE][sS]|[yY])$ ]]
@@ -420,11 +420,11 @@ check_interfaces(){
     for iface in $IFACES;
     do
         if echo "$iface" | grep -Eq "(wlan[0-9]|wl[a-z0-9]{,20})"; then
-            config="$(ip a s $iface)"                             # Get the iface logic configuration
+            config="$(ip a s "$iface")"                             # Get the iface logic configuration
 
             if echo "$config" | grep -qv "inet "; then              # Test if not currently connected
-                hw="$(iw $iface info | grep wiphy | cut -d" " -f2)" # Get the iface hardware id.
-                info="$(iw phy$hw info)"                            # Get the iface hardware infos.
+                hw="$(iw "$iface" info | grep wiphy | cut -d" " -f2)" # Get the iface hardware id.
+                info="$(iw phy"$hw" info)"                            # Get the iface hardware infos.
                 if echo "$info" | grep -qE "* AP$"; then            # Know if the iface has the AP mode available.
                     echo -n "[?] The interface $iface can be used for the Wi-Fi Access Point. Do you want to use it for the TinyCheck Access Point ? [Yes/No] "
                     read answer

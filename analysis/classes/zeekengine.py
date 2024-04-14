@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import json
 import os
 import re
@@ -11,8 +10,11 @@ from datetime import datetime
 import pydig
 import whois
 from classes.parsezeeklogs import ParseZeekLogs
-from netaddr import IPAddress, IPNetwork
-from utils import get_config, get_iocs, get_whitelist
+from netaddr import IPAddress
+from netaddr import IPNetwork
+from utils import get_config
+from utils import get_iocs
+from utils import get_whitelist
 
 
 class ZeekEngine(object):

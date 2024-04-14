@@ -29,7 +29,8 @@ def collect_accounts_info():
     alt_user = os.getenv("SUDO_USER", os.getenv("USER"))
     usr = "root" if os.path.expanduser("~") == "/root" else alt_user
     pid = psutil.Process().pid
-    term = psutil.Process().terminal() if "Linux" in platform.system() else "win"
+    term = psutil.Process().terminal() if "Linux" in platform.system(
+    ) else "win"
     accs[usr + "@" + term] = {"pid": pid}
     return accs
 
@@ -92,8 +93,7 @@ def collect_network_info():
         net_info[interface] = {}
         int_info = state[interface]
         props = [
-            p
-            for p in dir(int_info)
+            p for p in dir(int_info)
             if not p.startswith("_") and not p == "index" and not p == "count"
         ]
         for prop in props:
@@ -112,12 +112,10 @@ def collect_dependency_info(package_list):
     """
     dependencies = {}
     installed_packages = list(pkg_resources.working_set)
-    installed_packages_list = sorted(
-        [
-            "%s==%s" % (installed.key, installed.version)
-            for installed in installed_packages
-        ]
-    )
+    installed_packages_list = sorted([
+        "%s==%s" % (installed.key, installed.version)
+        for installed in installed_packages
+    ])
     for pkg in installed_packages_list:
         [package_name, package_version] = pkg.split("==")
         if package_name in package_list:
@@ -135,9 +133,8 @@ def collect_db_tables_records_count(db_path, tables):
     result = {}
     for table in tables:
         query = "SELECT COUNT(*) FROM %s" % (table)
-        sqlite_call = subprocess.Popen(
-            ["sqlite3", db_path, query], stdout=subprocess.PIPE
-        )
+        sqlite_call = subprocess.Popen(["sqlite3", db_path, query],
+                                       stdout=subprocess.PIPE)
         stout, sterr = sqlite_call.communicate()
         val = stout.decode("utf-8")
         recs = int(val) if val else 0
@@ -163,17 +160,21 @@ def collect_internal_state(db_path, tables, to_check):
     state_["db"]["records"] = {}
     if available:
         state_["db"]["size"] = os.stat(db_path).st_size
-        state_["db"]["records"] = collect_db_tables_records_count(db_path, tables)
+        state_["db"]["records"] = collect_db_tables_records_count(
+            db_path, tables)
 
     services_ = {}
     for alias in to_check:
         status = subprocess.call(
-            ["systemctl", "is-active", "--quiet", "%s" % (to_check[alias])]
-        )
+            ["systemctl", "is-active", "--quiet",
+             "%s" % (to_check[alias])])
         state = ""
         if status != 0:
             sysctl_call = subprocess.Popen(
-                ["systemctl", "status", "%s" % (to_check[alias]), r"|", "grep", r"''"],
+                [
+                    "systemctl", "status",
+                    "%s" % (to_check[alias]), r"|", "grep", r"''"
+                ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -182,7 +183,11 @@ def collect_internal_state(db_path, tables, to_check):
             errs = sterr.decode("utf-8")
             if "could not be found" in errs:
                 state = "Service not found"
-        services_[alias] = {"running": status == 0, "status": status, "state": state}
+        services_[alias] = {
+            "running": status == 0,
+            "status": status,
+            "state": state
+        }
     state_["svc"] = services_
     return state_
 

@@ -25,7 +25,7 @@ class Update(object):
         """
         if read_config(("frontend", "update")):
             try:
-                res = requests.get(self.project_url)
+                res = requests.get(self.project_url, timeout=60)
                 res = json.loads(res.content.decode("utf8"))
 
                 with open(os.path.join(self.app_path, "VERSION")) as f:

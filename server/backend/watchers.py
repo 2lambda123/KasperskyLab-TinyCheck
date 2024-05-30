@@ -39,7 +39,7 @@ def watch_iocs():
                 iocs_list = []
                 to_delete = []
                 try:
-                    res = requests.get(w["url"], verify=False)
+                    res = requests.get(w["url"], verify=False, timeout=60)
                     if res.status_code == 200:
                         content = json.loads(res.content)
                         iocs_list = content["iocs"] if "iocs" in content else []
@@ -88,7 +88,7 @@ def watch_whitelists():
                 elements = []
                 to_delete = []
                 try:
-                    res = requests.get(w["url"], verify=False)
+                    res = requests.get(w["url"], verify=False, timeout=60)
                     if res.status_code == 200:
                         content = json.loads(res.content)
                         elements = content["elements"] if "elements" in content else []

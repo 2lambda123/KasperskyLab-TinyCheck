@@ -8,9 +8,9 @@ from flask import send_file, jsonify
 import datetime
 import shutil
 import json
-import random
 import sys
 import re
+import secrets
 
 
 class Capture(object):
@@ -31,7 +31,7 @@ class Capture(object):
 
         # Few context variable assignment
         self.capture_token = "".join(
-            [random.choice(self.random_choice_alphabet) for i in range(8)])
+            [secrets.choice(self.random_choice_alphabet) for i in range(8)])
         self.capture_dir = "/tmp/{}/".format(self.capture_token)
         self.assets_dir = "/tmp/{}/assets/".format(self.capture_token)
         self.pcap = self.capture_dir + "capture.pcap"

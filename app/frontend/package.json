@@ -9,24 +9,24 @@
   },
   "dependencies": {
     "@fnando/sparkline": "^0.3.10",
-    "axios": "^0.21.1",
+    "axios": "^0.28.0",
     "core-js": "^3.6.5",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.4",
     "simple-keyboard": "^2.30.25",
-    "vue": "^2.6.12",
+    "vue": "^3.5.13",
     "vue-i18n": "^8.22.4",
     "vue-router": "^3.4.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.6",
-    "@vue/cli-plugin-eslint": "~4.5.6",
-    "@vue/cli-service": "~4.5.6",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.9.0",
     "eslint-plugin-vue": "^6.2.2",
     "vue-i18n-extract": "1.1.10",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.7.16"
   },
   "eslintConfig": {
     "root": true,

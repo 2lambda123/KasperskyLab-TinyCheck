@@ -9,13 +9,13 @@ import sys
 import time
 import qrcode
 import base64
-import random
 import requests
 
 from wifi import Cell
 from os import path, remove
 from io import BytesIO
 from app.utils import terminate_process, read_config
+import secrets
 
 
 class Network(object):
@@ -170,14 +170,14 @@ class Network(object):
 
         # Generate the hostapd configuration
         if read_config(("network", "tokenized_ssids")):
-            token = "".join([random.choice(self.random_choice_alphabet)
+            token = "".join([secrets.choice(self.random_choice_alphabet)
                              for i in range(4)])
-            self.AP_SSID = random.choice(read_config(
+            self.AP_SSID = secrets.choice(read_config(
                 ("network", "ssids"))) + "-" + token
         else:
-            self.AP_SSID = random.choice(read_config(("network", "ssids")))
+            self.AP_SSID = secrets.choice(read_config(("network", "ssids")))
         self.AP_PASS = "".join(
-            [random.choice(self.random_choice_alphabet) for i in range(8)])
+            [secrets.choice(self.random_choice_alphabet) for i in range(8)])
 
         # Launch hostapd
         if self.write_hostapd_config():
